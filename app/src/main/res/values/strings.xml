@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Keep Shoes</string>
+    <string name="app_version">versi 1.0.0</string>
+    <string name="logo">logo</string>
+    <string name="search">Search</string>
+    <string name="menu">Menu</string>
+    <string name="tambah_catatan">tambah catatan</string>
+    <string name="daftar_kosong">daftar kosong</string>
+    <string name="daftar_masih_kosong">Daftar masih kosong</string>
+    <string name="upload_gambar">upload gambar</string>
+</resources>

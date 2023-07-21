@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/app_bar_search"
+        android:title="Cari"
+        android:icon="@drawable/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
+    <item
+        android:title="Tempat Sampah"
+        android:id="@+id/app_bar_tempat_sampah" />
+
+    <item
+        android:title="Tentang Aplikasi"
+        android:id="@+id/app_bar_about" />
+</menu>
