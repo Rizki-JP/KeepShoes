@@ -2,19 +2,24 @@ package com.example.keepshoes;
 
 public class DataModel {
     private int id;
-    private byte[] fotoSepatu;
+    private String fotoSepatu;
     private String namaPemilik;
     private String nomorTelepon;
     private String merkSepatu;
     private String warnaSepatu;
     private String ukuranSepatu;
 
+    private String biaya;
+    private String lamaPengerjaan;
+    private String catatan;
+
     public  DataModel() {}
 
-    public DataModel(int id, byte[] fotoSepatu,
+    public DataModel(int id, String fotoSepatu,
                      String namaPemilik, String nomorTelepon,
                      String merkSepatu, String warnaSepatu,
-                     String ukuranSepatu
+                     String ukuranSepatu, String biaya, String lamaPengerjaan,
+                     String catatan
     ) {
         this.id = id;
         this.fotoSepatu = fotoSepatu;
@@ -23,6 +28,9 @@ public class DataModel {
         this.merkSepatu = merkSepatu;
         this.warnaSepatu = warnaSepatu;
         this.ukuranSepatu = ukuranSepatu;
+        this.biaya = biaya;
+        this.lamaPengerjaan = lamaPengerjaan;
+        this.catatan = catatan;
     }
 
     public int getId() {
@@ -33,11 +41,11 @@ public class DataModel {
         this.id = id;
     }
 
-    public byte[] getFotoSepatu() {
+    public String getFotoSepatu() {
         return fotoSepatu;
     }
 
-    public void setFotoSepatu(byte[] fotoSepatu) {
+    public void setFotoSepatu(String fotoSepatu) {
         this.fotoSepatu = fotoSepatu;
     }
 
@@ -79,5 +87,29 @@ public class DataModel {
 
     public void setUkuranSepatu(String ukuranSepatu) {
         this.ukuranSepatu = ukuranSepatu;
+    }
+
+    public String getBiaya() {
+        return biaya;
+    }
+
+    public void setBiaya(String biaya) {
+        this.biaya = biaya;
+    }
+
+    public String getLamaPengerjaan() {
+        return lamaPengerjaan;
+    }
+
+    public void setLamaPengerjaan(String lamaPengerjaan) {
+        this.lamaPengerjaan = lamaPengerjaan;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
     }
 }

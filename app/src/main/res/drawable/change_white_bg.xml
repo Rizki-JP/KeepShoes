@@ -1,0 +1,18 @@
+<!-- white_rounded_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Rounded Rectangle Shape as the Background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+            <corners android:radius="50dp" /> <!-- Adjust the radius as needed -->
+        </shape>
+    </item>
+
+    <!-- Your Vector Drawable -->
+    <item
+        android:drawable="@drawable/change"
+        android:width="24dp"
+        android:height="24dp"
+        android:tint="#888888"
+        android:gravity="center" />
+</layer-list>

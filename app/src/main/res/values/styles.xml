@@ -4,4 +4,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="ToolbarTitle">
+        <item name="fontFamily">@font/quicksand_bold</item>
+    </style>
 </resources>

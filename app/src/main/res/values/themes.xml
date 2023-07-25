@@ -13,4 +13,9 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.KeepShoes.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="fontFamily">@font/quicksand_medium</item>
+        <item name="colorSecondary">@color/white</item>
+    </style>
 </resources>

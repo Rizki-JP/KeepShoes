@@ -5,16 +5,16 @@
     android:background="@drawable/border_set"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/imv_foto_sepatu"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/circleImageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/hapus_item" />
 
     <TextView
         android:id="@+id/tv_nama_pemilik"
@@ -36,13 +36,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:fontFamily="@font/quicksand"
-        android:text="0895360754859, Adidas 4D, 42"
+        android:text="0895266754852, Adidas 4D, 42"
         android:textColor="#555555"
         android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@id/imv_foto_sepatu"
         app:layout_constraintTop_toBottomOf="@id/tv_nama_pemilik" />
 
     <ImageButton
+        android:id="@+id/btn_del_item"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="10dp"

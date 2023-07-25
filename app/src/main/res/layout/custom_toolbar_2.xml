@@ -6,7 +6,7 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     android:elevation="4dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:theme="@style/Theme.KeepShoes.Toolbar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:contentInsetEnd="0dp"
     app:contentInsetStart="0dp">
@@ -15,9 +15,7 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:gravity="center_vertical"
-        android:fontFamily="@font/quicksand_bold"
+        android:theme="@style/ToolbarTitle"
         android:textColor="@color/white"
         android:textSize="18sp" />
 

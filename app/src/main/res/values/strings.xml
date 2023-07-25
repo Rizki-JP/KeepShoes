@@ -5,7 +5,9 @@
     <string name="search">Search</string>
     <string name="menu">Menu</string>
     <string name="tambah_catatan">tambah catatan</string>
-    <string name="daftar_kosong">daftar kosong</string>
-    <string name="daftar_masih_kosong">Daftar masih kosong</string>
+    <string name="daftar_kosong">Daftar kosong</string>
+    <string name="gambar_kosong">Gambar kosong</string>
     <string name="upload_gambar">upload gambar</string>
+    <string name="klik_untuk_pilih_gambar">Klik untuk pilih gambar</string>
+    <string name="hapus_item">hapus item</string>
 </resources>

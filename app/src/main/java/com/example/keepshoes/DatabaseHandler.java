@@ -14,7 +14,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "keep_shoes";
     private static final String TABLE_CATATAN_SEPATU = "catatan_sepatu";
 
-//   Kolom Tabel (7)
+//   Kolom Tabel (10)
     private static final String KEY_ID = "id";
     private static final String KEY_FOTO_SEPATU = "foto_sepatu";
     private static final String KEY_NAMA_PEMILIK = "nama_pemilik";
@@ -22,6 +22,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_MERK_SEPATU = "merk_sepatu";
     private static final String KEY_WARNA_SEPATU = "warna_sepatu";
     private static final String KEY_UKURAN_SEPATU = "ukuran_sepatu";
+    private static final String KEY_BIAYA = "biaya";
+    private static final String KEY_LAMA_PENGERJAAN = "lama_pengerjaan";
+    private static final String KEY_CATATAN = "catatan";
+    private static final String KEY_DELETED = "deleted";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,10 +35,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql_create_table =
                 "CREATE TABLE " + TABLE_CATATAN_SEPATU + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_FOTO_SEPATU + " BLOB,"
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_FOTO_SEPATU + " TEXT,"
                 + KEY_NAMA_PEMILIK + " TEXT," + KEY_NO_TELEPON + " TEXT,"
                 + KEY_MERK_SEPATU + " TEXT," + KEY_WARNA_SEPATU + " TEXT,"
-                + KEY_UKURAN_SEPATU + " TEXT" + ")";
+                + KEY_UKURAN_SEPATU + " TEXT," + KEY_BIAYA + " TEXT,"
+                + KEY_LAMA_PENGERJAAN + " TEXT," + KEY_CATATAN + " TEXT,"
+                + KEY_DELETED + " INTEGER DEFAULT 0" + ")";
 
         db.execSQL(sql_create_table);
     }
@@ -55,6 +61,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_MERK_SEPATU, dataModel.getMerkSepatu());
         values.put(KEY_WARNA_SEPATU, dataModel.getWarnaSepatu());
         values.put(KEY_UKURAN_SEPATU, dataModel.getUkuranSepatu());
+        values.put(KEY_BIAYA, dataModel.getBiaya());
+        values.put(KEY_LAMA_PENGERJAAN, dataModel.getLamaPengerjaan());
+        values.put(KEY_CATATAN, dataModel.getCatatan());
 
         db.insert(TABLE_CATATAN_SEPATU, null, values);
         db.close();
@@ -65,7 +74,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_CATATAN_SEPATU, new String[] {
                 KEY_ID, KEY_FOTO_SEPATU, KEY_NAMA_PEMILIK, KEY_NO_TELEPON,
-                KEY_MERK_SEPATU, KEY_WARNA_SEPATU, KEY_UKURAN_SEPATU
+                KEY_MERK_SEPATU, KEY_WARNA_SEPATU, KEY_UKURAN_SEPATU,
+                KEY_BIAYA, KEY_LAMA_PENGERJAAN, KEY_CATATAN
                 }, KEY_ID + "=?", new String[] { String.valueOf(id) },
                 null, null, null, null);
 
@@ -74,12 +84,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         assert cursor != null;
         DataModel dataModel = new DataModel(
                 cursor.getInt(0),
-                cursor.getBlob(1),
+                cursor.getString(1),
                 cursor.getString(2),
                 cursor.getString(3),
                 cursor.getString(4),
                 cursor.getString(5),
-                cursor.getString(6)
+                cursor.getString(6),
+                cursor.getString(7),
+                cursor.getString(8),
+                cursor.getString(9)
         );
 
         cursor.close();
@@ -89,28 +102,42 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<DataModel> getAllRecord(String searchTerm) {
+        return getAllRecord(searchTerm, false);
+    }
+
+    public List<DataModel> getAllRecord(String searchTerm, boolean isDeleted) {
         List<DataModel> dataList = new ArrayList<DataModel>();
 
         // Select Query with the WHERE clause to search for the provided searchTerm
         String selectQuery = "SELECT * FROM " + TABLE_CATATAN_SEPATU + " WHERE " +
-                KEY_NAMA_PEMILIK + " LIKE '%" + searchTerm + "%' OR " +
-                KEY_MERK_SEPATU + " LIKE '%" + searchTerm + "%' OR " +
-                KEY_WARNA_SEPATU + " LIKE '%" + searchTerm + "%' OR " +
-                KEY_UKURAN_SEPATU + " LIKE '%" + searchTerm + "%'";
+                KEY_DELETED + "= ? AND (" +
+                KEY_NAMA_PEMILIK + " LIKE ? OR " +
+                KEY_MERK_SEPATU + " LIKE ? OR " +
+                KEY_WARNA_SEPATU + " LIKE ? OR " +
+                KEY_UKURAN_SEPATU + " LIKE ?)";
+
+        searchTerm = "%" + searchTerm + "%";
+        String[] selectionArgs = new String[]{
+                (isDeleted) ? "1" : "0",
+                searchTerm, searchTerm, searchTerm, searchTerm
+        };
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(selectQuery, selectionArgs);
 
         if (cursor.moveToFirst()) {
             do {
                 DataModel dataModel = new DataModel(
                     cursor.getInt(0),
-                    cursor.getBlob(1),
+                    cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
                     cursor.getString(4),
                     cursor.getString(5),
-                    cursor.getString(6)
+                    cursor.getString(6),
+                    cursor.getString(7),
+                    cursor.getString(8),
+                    cursor.getString(9)
                 );
 
                 dataList.add(dataModel);
@@ -123,18 +150,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return dataList;
     }
 
-    public int getDataModelCount() {
-        String countQuery = "SELECT * FROM " + TABLE_CATATAN_SEPATU;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-        db.close();
-
-        // return count
-        return cursor.getCount();
-    }
-
-    public int updateData(DataModel dataModel) {
+    public void updateData(DataModel dataModel) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -144,10 +160,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_MERK_SEPATU, dataModel.getMerkSepatu());
         values.put(KEY_WARNA_SEPATU, dataModel.getWarnaSepatu());
         values.put(KEY_UKURAN_SEPATU, dataModel.getUkuranSepatu());
+        values.put(KEY_BIAYA, dataModel.getBiaya());
+        values.put(KEY_LAMA_PENGERJAAN, dataModel.getLamaPengerjaan());
+        values.put(KEY_CATATAN, dataModel.getCatatan());
 
         // updating row
-        return db.update(TABLE_CATATAN_SEPATU, values, KEY_ID + " = ?",
+        db.update(TABLE_CATATAN_SEPATU, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(dataModel.getId()) });
+        db.close();
+    }
+
+    public void setDeletedModel(DataModel dataModel, boolean isDeleted) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_DELETED, (isDeleted) ? 1 : 0);
+        db.update(TABLE_CATATAN_SEPATU, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(dataModel.getId()) });
+        db.close();
     }
 
     public void deleteModel(DataModel dataModel) {
